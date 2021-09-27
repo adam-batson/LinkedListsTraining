@@ -91,12 +91,11 @@ namespace LinkedListsTraining
 
             if (index == 0)
             {
-                if (Head.next == null) Head = null;
-                else Head = Head.next;
+                Head = Head.next;
             }
             else
             {
-                for (int i = 1; i < index; i++)
+                for (int i = 0; i < index; i++)
                 { // Move through nodes until current is just before the index
                     if (i == (index - 1)) previous = current;
                     if (current.next != null) current = current.next; // Make sure we don't try to move past tail
@@ -104,9 +103,6 @@ namespace LinkedListsTraining
 
                 previous.next = current.next; // Sets previous node's next to deleted node's next
             }
-            
-
-
         }
     }
 }

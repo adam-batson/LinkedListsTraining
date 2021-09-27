@@ -54,13 +54,12 @@ namespace LinkedListTraining_tests
         [TestMethod]
         public void DeleteAtIndex_OneNumber_CanReturnNumber()
         {
-            int[] list = new int[] {1, 4, 7, 9, 3};
-            Helpers.LinkedListBuilder.CreateSinglyLinkedList(list);
-
             var index = 0;
             var expected = 2; // Expected value we will retrieve from Head
             var sut = new MyLinkedList();
 
+            sut.AddAtHead(2); // Makes a list with indices to delete
+            sut.AddAtHead(1);
             sut.DeleteAtIndex(index); // Add a Node with val 2 as new Head
 
             var actual = sut.Get(0); // Get value of Head
