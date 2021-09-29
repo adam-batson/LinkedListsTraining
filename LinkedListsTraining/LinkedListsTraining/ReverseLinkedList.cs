@@ -10,7 +10,18 @@ namespace LinkedListsTraining.ReverseLinkedList
     {
         public ListNode ReverseList(ListNode head)
         {
-            throw new NotImplementedException();
+            var current = head;
+            var temp = new ListNode();
+
+            if (head == null) return head;
+            while(current.next != null)
+            {
+                temp = current.next;
+                current.next = temp.next;
+                temp.next = head;
+                head = temp;
+            }
+            return head;
         }
     }
 }

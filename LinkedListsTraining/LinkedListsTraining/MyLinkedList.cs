@@ -9,53 +9,53 @@ namespace LinkedListsTraining
     public class MyLinkedList
     {
         public ListNode Head { get; set; }
+        int length = 0;
 
         /** Initialize your data structure here. */
         public MyLinkedList()
         {
-            Head = new ListNode();
         }
 
         /** Get the val of the index-th node in the linked list. If the index
          * is invalid, return -1. */
         public int Get(int index)
         {
-            if (index < 0) return -1; // Can't have a negative index
-            else if(index == 0) // Index is Head
+            if (index < 0 || index > length || Head == null) return -1;
+
+            ListNode current = Head;
+            var i = 0;
+
+            while (current != null)
             {
-                return Head.val;
+                if (i == index) return current.val;
+                current = current.next;
+                i++;
             }
-            else // Index is at least 1
-            {
-                ListNode current = Head; // Current node is Head at the start
-                for (int i = 1; i <= index; i++) current = current.next; // Keep moving to the next node until current node is at given index
-                return current.val; // Return current node value
-            }
+            return -1;
         }
 
         /** Add a node of value val before the first element of the linked list. 
          * After the insertion, the new node will be the first node of the linked list. */
         public void AddAtHead(int val)
         {
-            ListNode newNode = new ListNode(); // Create a new node
-            newNode.val = val; // Assign given value to new node
-
-            newNode.next = Head; // New node points to Head node
-            Head = newNode; // New node becomes Head node
+            ListNode newNode = new ListNode(val);
+            newNode.next = Head;
+            Head = newNode;
+            length++;
         }
 
         /** Append a node of value val to the last element of the linked list. */
         public void AddAtTail(int val)
         {
-            ListNode newNode = new ListNode(); // Create new node
-            newNode.val = val; // Assign given value to new node
+            if (Head == null) AddAtHead(val);
+            else
+            {
+                ListNode current = Head;
 
-            ListNode current = Head;// Current node is Head at the start
-
-            while (current.next != null) // Move through nodes until next is null, telling us we're at the tail
-                current = current.next;
-
-            current.next = newNode;// Current tail node now points to new node            
+                while (current.next != null) current = current.next;
+                current.next = new ListNode(val);
+                length++;
+            }
         }
 
         /** Add a node of val val before the index-th node in the linked list. 
@@ -64,44 +64,41 @@ namespace LinkedListsTraining
          * will not be inserted. */
         public void AddAtIndex(int index, int val)
         {
-            ListNode newNode = new ListNode(); // Create new node
-            newNode.val = val; // Assigns given value to new node
-            if(index == 0)
+            if (index > length || index < 0) return;
+            else if (index == 0) AddAtHead(val);
+            else if (index == length) AddAtTail(val);
+            else
             {
-                AddAtHead(val);
-            }
-            ListNode current = Head; // Start at Head
-            ListNode previous = Head; // Tracks node before new node so it can point to new node - starts as Head
+                ListNode newNode = new ListNode(val);
+                ListNode previous = Head;
 
-            for (int i = 0; i < index; i++)
-            { // Move through nodes until current is just before the index
-                if (i == (index - 1)) previous = current;
-                if (current.next != null) current = current.next; // Make sure we don't try to move past tail
-            }
+                for (int i = 0; i < index - 1; i++) previous = previous.next;
 
-            previous.next = newNode; // Node before index points to new node
-            newNode.next = current.next; // New node points to next node
+                newNode.next = previous.next;
+                previous.next = newNode;
+                length++;
+            }
         }
 
         /** Delete the index-th node in the linked list, if the index is valid. */
         public void DeleteAtIndex(int index)
         {
-            ListNode current = Head; // Start at Head node
-            ListNode previous = Head; // Tracks node before new node so it can point to next node after deletion - starts as Head
-
-            if (index == 0)
+            if (index < 0 || index >= length || Head == null) return;
+            else if (index == 0)
             {
                 Head = Head.next;
+                length--;
             }
             else
             {
-                for (int i = 0; i < index; i++)
-                { // Move through nodes until current is just before the index
-                    if (i == (index - 1)) previous = current;
-                    if (current.next != null) current = current.next; // Make sure we don't try to move past tail
-                }
+                ListNode current = Head;
 
-                previous.next = current.next; // Sets previous node's next to deleted node's next
+                for (int i = 0; i < index; i++)
+                {
+                    if (i == index - 1) current.next = current.next.next;
+                    else current = current.next;
+                }
+                length--;
             }
         }
     }
